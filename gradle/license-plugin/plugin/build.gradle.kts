@@ -25,10 +25,17 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 gradlePlugin {
     // Define the plugin
-    val greeting by plugins.creating {
-        id = "org.example.greeting"
+    val license by plugins.creating {
+        id = "org.example.license"
         implementationClass = "org.example.LicensePlugin"
     }
 }

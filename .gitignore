@@ -3,5 +3,24 @@
 
 # Ignore Gradle build output directory
 build
+.project
+.settings
+
+app/bin
 app/build
+app/.classpath
+app/.project
+app/.settings
+
+gradle/license-plugin/.project
+gradle/license-plugin/.settings
+gradle/license-plugin/plugin/bin/
+gradle/license-plugin/plugin/.classpath
+gradle/license-plugin/plugin/.project
+gradle/license-plugin/plugin/.settings
+
+lib/bin
 lib/build
+lib/.classpath
+lib/.project
+lib/.settings

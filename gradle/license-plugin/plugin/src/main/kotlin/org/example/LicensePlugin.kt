@@ -5,7 +5,12 @@ package org.example
 
 import org.gradle.api.Project
 import org.gradle.api.Plugin
-
+import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.TaskAction
+import java.io.File
+import java.io.InputStream
+import java.nio.charset.Charset
 /**
  * A simple 'hello world' plugin.
  */
@@ -15,6 +20,32 @@ class LicensePlugin: Plugin<Project> {
         project.tasks.register("greeting") { task ->
             task.doLast {
                 println("Hello from plugin 'org.example.greeting'")
+            }
+        }
+
+        project.tasks.register("license", LicenseTask::class.java) { task ->
+            task.description = "add a license header to source code"   // Add description
+            task.group = "from license plugin"                         // Add group
+        }
+    }
+}
+
+abstract class LicenseTask : DefaultTask() {
+    @Input
+    val licenseFilePath = project.layout.settingsDirectory.file("license.txt").asFile.path
+
+    @TaskAction
+    fun action() {
+        // Read the license text
+        val licenseText = File(licenseFilePath).readText()
+        // Walk the directories looking for java files
+        project.layout.settingsDirectory.asFile.walk().forEach {
+            if (it.extension == "java") {
+                // Read the source code
+                var ins: InputStream = it.inputStream()
+                var content = ins.readBytes().toString(Charset.defaultCharset())
+                // Write the license and the source code to the file
+                it.writeText(licenseText + content)
             }
         }
     }
